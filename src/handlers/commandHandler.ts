@@ -1,23 +1,24 @@
 import { Collection, Interaction, REST, Routes } from "discord.js";
 import fs from "node:fs";
 import path from "node:path";
-import * as Configs from "../config.json";
+import * as Configs from "../../config.json";
 
 const commandFiles = fs
   .readdirSync("./src/commands")
   .filter((file) => file.endsWith(".ts"));
-let commands: Collection<string, CallableFunction> = new Collection();
+const commands: Collection<string, CallableFunction> = new Collection();
+
 const commandsJSON = [];
 
 export function setupCommands() {
   for (const file of commandFiles) {
-    const commandData = require("./" + path.join("./commands", file));
+    const commandData = require("../" + path.join("commands", file));
     commands.set(commandData.command.name, commandData.callback);
     commandsJSON.push(commandData.command.toJSON());
   }
 }
 
-export async function processCommands(inter: Interaction) {
+export async function processInteractionCommands(inter: Interaction) {
   if (!inter.isChatInputCommand()) return;
   const command = commands.get(inter.commandName);
   try {

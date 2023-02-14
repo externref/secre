@@ -1,2 +1,4 @@
+handler.py
 config.json
 node_modules/
+**cache**/

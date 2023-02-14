@@ -1,9 +1,19 @@
-import { SlashCommandBuilder } from "discord.js";
-import { CommandInteraction } from "discord.js";
+import {
+  SlashCommandBuilder,
+  CommandInteraction,
+  EmbedBuilder,
+  Colors,
+} from "discord.js";
+
 export const command = new SlashCommandBuilder()
   .setName("ping")
   .setDescription("get bot latency");
 
 export async function callback(inter: CommandInteraction) {
-  await inter.reply({ content: `Pong! \`${inter.client.ws.ping}ms\`` });
+  const embed = new EmbedBuilder()
+    .setColor(Colors.Blurple)
+    .setDescription(`Pong! \`${inter.client.ws.ping}ms\``);
+  await inter.reply({ embeds: [embed] });
 }
+
+export const category = "meta";
