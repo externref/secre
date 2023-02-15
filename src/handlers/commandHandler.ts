@@ -2,7 +2,22 @@ import { Collection, Interaction, REST, Routes } from "discord.js";
 import fs from "node:fs";
 import path from "node:path";
 import * as Configs from "../../config.json";
-import { getLogger, levels } from "log4js";
+import { getLogger, configure, levels } from "log4js";
+configure({
+  appenders: {
+    console: { type: "console" },
+    file: {
+      type: "file",
+      filename: "logs/app.log",
+      maxLogSize: 10485760,
+      backups: 3,
+      compress: true,
+    },
+  },
+  categories: {
+    default: { appenders: ["console", "file"], level: "info" },
+ },});
+
 const logger = getLogger("commandHandler")
 logger.level = levels.INFO
 const commandFiles = fs
