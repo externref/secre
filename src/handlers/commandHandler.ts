@@ -2,7 +2,9 @@ import { Collection, Interaction, REST, Routes } from "discord.js";
 import fs from "node:fs";
 import path from "node:path";
 import * as Configs from "../../config.json";
-
+import { getLogger, levels } from "log4js";
+const logger = getLogger("commandHandler")
+logger.level = levels.INFO
 const commandFiles = fs
   .readdirSync("./src/commands")
   .filter((file) => file.endsWith(".ts"));
@@ -15,25 +17,28 @@ export function setupCommands() {
     const commandData = require("../" + path.join("commands", file));
     commands.set(commandData.command.name, commandData.callback);
     commandsJSON.push(commandData.command.toJSON());
+    
   }
+  logger.info(`loaded ${commandsJSON.length} commands`)
 }
 
 export async function processInteractionCommands(inter: Interaction) {
   if (!inter.isChatInputCommand()) return;
   const command = commands.get(inter.commandName);
+  logger.info(`command ${inter.commandName} was executed by ${inter.user.tag} (${inter.user.id})`)
   try {
     await command(inter);
   } catch (error) {
-    console.error(error);
     await inter.reply({
       content: "There was an error while executing this command!",
       ephemeral: true,
     });
+    await logger.error(error)
   }
 }
 
 export async function syncCommands() {
-  console.log("syncing commands.")
+  logger.info(`syncing ${commandsJSON.length} commands`)
   const RESTClient = new REST({ version: "10" }).setToken(Configs.botToken);
   await RESTClient.put(Routes.applicationCommands(Configs.botID), {
     body: commandsJSON,

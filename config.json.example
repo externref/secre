@@ -1,5 +1,6 @@
 {
     "ownerId": "580034015759826944", 
     "botToken": "BOT TOKEN" ,
-    "botID": "964195658468835358"
+    "botID": "964195658468835358",
+    "pgSQLURL": "your connection url"
 }

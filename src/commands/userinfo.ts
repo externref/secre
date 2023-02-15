@@ -5,6 +5,8 @@ import {
 	SlashCommandBuilder,
 	SlashCommandUserOption,
 } from "discord.js";
+import "moment" ;
+import moment from "moment";
 
 export const command = new SlashCommandBuilder()
 	.setName("userinfo")
@@ -31,10 +33,12 @@ export async function callback(interaction: CommandInteraction) {
 			text: `Requested by: ${interaction.user.tag}`,
 			iconURL: interaction.user.displayAvatarURL(),
 		});
-
+		
 	embed.addFields(
-		{name: "Created on", value: `${member.user.createdAt.toDateString()}`},
-		{name: "Joined on", value: `${member.joinedAt.toDateString()}`}
+		{name: "Created on", value: moment(member.user.createdAt).format("dddd, MMMM Do YYYY, h:mm a")},
+		{name: "Joined on", value: moment(member.joinedAt).format("dddd, MMMM Do YYYY, h:mm a")},
+		{name: "Top role", value: member.roles.highest.name, inline:true},
+		{name:"Color", value: member.displayColor.toString(), inline:true}
 	);
 	await interaction.reply({embeds: [embed]});
 }
