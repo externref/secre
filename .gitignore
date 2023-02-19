@@ -1,4 +1,8 @@
 handler.py
 config.json
+logs/
 node_modules/
+.*/
 **cache**/
+*.js
+*.js.map

@@ -2,5 +2,12 @@
     "ownerId": "580034015759826944", 
     "botToken": "BOT TOKEN" ,
     "botID": "964195658468835358",
-    "pgSQLURL": "your connection url"
+    "apiBaseURL": "0.0.0.0:8000",
+    "postgresConfigs": {
+        "host":"host1234.xyz",
+        "port": 5432,
+        "database":"databasename",
+        "username":"sarthhh",
+        "password":"youshallnotpass"
+    }
 }

@@ -1,6 +1,6 @@
-import { Message} from "discord.js";
-import { syncCommands } from "./commandHandler";
+import { Message } from "discord.js";
 import * as Configs from "../../config.json";
+import { syncCommands } from "./commandHandler";
 
 
 export async function processPrefixCommands(message:Message) {

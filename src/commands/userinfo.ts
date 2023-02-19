@@ -1,11 +1,11 @@
 import {
-	Colors,
-	CommandInteraction,
-	EmbedBuilder,
-	SlashCommandBuilder,
-	SlashCommandUserOption,
+    Colors,
+    CommandInteraction,
+    EmbedBuilder,
+    SlashCommandBuilder,
+    SlashCommandUserOption,
 } from "discord.js";
-import "moment" ;
+import "moment";
 import moment from "moment";
 
 export const command = new SlashCommandBuilder()
@@ -26,7 +26,7 @@ export async function callback(interaction: CommandInteraction) {
 	);
 	const embed = new EmbedBuilder()
 		.setAuthor({name: member.user.tag})
-		.setColor(Colors.Blurple)
+		.setColor(Colors.DarkButNotBlack)
 		.setDescription(`Information about ${member}`)
 		.setThumbnail(member.displayAvatarURL())
 		.setFooter({

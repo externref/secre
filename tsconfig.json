@@ -1,3 +1,10 @@
 {
-  "compilerOptions": { "resolveJsonModule": true, "esModuleInterop": true, "downlevelIteration": true,}
+	"compilerOptions": {
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"downlevelIteration": true,
+		"target": "es5",
+		"module": "commonjs",
+		"sourceMap": true
+	}
 }

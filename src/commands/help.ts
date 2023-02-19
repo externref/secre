@@ -1,9 +1,9 @@
 import {
-	SlashCommandBuilder,
-	EmbedBuilder,
+	Collection,
 	Colors,
 	CommandInteraction,
-	Collection,
+	EmbedBuilder,
+	SlashCommandBuilder,
 } from "discord.js";
 import fs from "node:fs";
 import path from "node:path";
@@ -15,7 +15,7 @@ const commandFiles = fs
 	.readdirSync("./src/commands")
 	.filter((file) => file.endsWith(".ts"));
 const categories: Collection<string, Array<string>> = new Collection();
-
+const categoryNames = ["info", "moderation", "meta"];
 function helpMap() {
 	for (const file of commandFiles) {
 		if (file == "help.ts") continue;
@@ -32,7 +32,7 @@ function helpMap() {
 helpMap();
 export async function callback(interaction: CommandInteraction) {
 	const embed = new EmbedBuilder()
-		.setColor(Colors.Blurple)
+		.setColor(Colors.DarkButNotBlack)
 		.setAuthor({
 			name: interaction.client.user.username,
 			iconURL: interaction.client.user.displayAvatarURL(),
@@ -42,13 +42,13 @@ export async function callback(interaction: CommandInteraction) {
 			iconURL: interaction.user.displayAvatarURL(),
 		});
 
-	for (const name of categories.keys()) {
+	for (const name of categoryNames) {
 		embed.addFields({
 			name: `${name.replace(name[0], name[0].toUpperCase())} Commands`,
 			value: `\`\`\`fix\n${categories.get(name).join(", ")}\n\`\`\``,
 		});
 	}
-	await interaction.reply({embeds: [embed]});
+	await interaction.reply({ embeds: [embed] });
 }
 
 export const category = null;
