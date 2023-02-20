@@ -3,25 +3,40 @@ import {
 	CommandInteraction,
 	EmbedBuilder,
 	SlashCommandBuilder,
-    SlashCommandUserOption,
+	SlashCommandUserOption,
+	AttachmentBuilder,
 } from "discord.js";
-import axios from "axios";
+import { endpoints } from "../apiWrapper";
 
 export const command = new SlashCommandBuilder()
 	.setName("grayscale")
 	.setDescription("Add grayscale filter to avatar.")
-    .addUserOption(new SlashCommandUserOption().setName("member").setDescription("The member whose avatar to grayscale."));
+	.addUserOption(
+		new SlashCommandUserOption()
+			.setName("member")
+			.setDescription("The member whose avatar to grayscale.")
+	);
 
 export async function callback(inter: CommandInteraction) {
-    const partialMember = inter.options.getMember("member")
-    const member = inter.guild.members.cache.get(
+	const partialMember = inter.options.getMember("member");
+	const member = inter.guild.members.cache.get(
 		partialMember.toString().replace("<@", "").replace(">", "")
 	);
-    const imageBytes = (await axios.get(`0.0.0.0:8000/grayscale?url=${member.displayAvatarURL()}`)).data
+	await inter.deferReply();
+
 	const embed = new EmbedBuilder()
 		.setColor(Colors.DarkButNotBlack)
-		.setDescription(`laters`);
-	await inter.reply({ embeds: [embed] });
+		.setImage("attachment://grayscale.png");
+	const attachment = new AttachmentBuilder(
+		endpoints.grayscaleFilter(
+			encodeURIComponent(member.displayAvatarURL({ size: 1024, extension: "png" }))
+		),
+		{ name: "grayscale.png" }
+	);
+	await inter.editReply({
+		embeds: [embed],
+		files: [attachment],
+	});
 }
 
-export const category = "meta";
+export const category = "image";

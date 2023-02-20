@@ -11,14 +11,13 @@ import path from "node:path";
 export const command = new SlashCommandBuilder()
 	.setName("help")
 	.setDescription("Get help for the bot");
-const commandFiles = fs
-	.readdirSync("./src/commands")
-	.filter((file) => file.endsWith(".ts"));
+const commandFiles = fs.readdirSync("./src/commands").filter((file) => file.endsWith(".ts"));
 const categories: Collection<string, Array<string>> = new Collection();
 const categoryNames = ["info", "moderation", "meta"];
 function helpMap() {
 	for (const file of commandFiles) {
 		if (file == "help.ts") continue;
+		// eslint-disable-next-line @typescript-eslint/no-var-requires
 		const commandData = require("./" + path.join(file));
 		if (!categories.get(commandData.category)) {
 			categories.set(commandData.category, []);

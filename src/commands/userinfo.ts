@@ -1,12 +1,10 @@
 import {
-    Colors,
-    CommandInteraction,
-    EmbedBuilder,
-    SlashCommandBuilder,
-    SlashCommandUserOption,
+	CommandInteraction,
+	EmbedBuilder,
+	SlashCommandBuilder,
+	SlashCommandUserOption,
 } from "discord.js";
-import "moment";
-import moment from "moment";
+import { toUNIXTimestamp /*, TimestampStyle*/ } from "../utils/stringOps";
 
 export const command = new SlashCommandBuilder()
 	.setName("userinfo")
@@ -25,22 +23,25 @@ export async function callback(interaction: CommandInteraction) {
 		user.toString().replace("<@", "").replace(">", "")
 	);
 	const embed = new EmbedBuilder()
-		.setAuthor({name: member.user.tag})
-		.setColor(Colors.DarkButNotBlack)
+		.setAuthor({ name: member.user.tag })
+		.setColor(member.displayColor)
 		.setDescription(`Information about ${member}`)
 		.setThumbnail(member.displayAvatarURL())
 		.setFooter({
 			text: `Requested by: ${interaction.user.tag}`,
 			iconURL: interaction.user.displayAvatarURL(),
 		});
-		
+
 	embed.addFields(
-		{name: "Created on", value: moment(member.user.createdAt).format("dddd, MMMM Do YYYY, h:mm a")},
-		{name: "Joined on", value: moment(member.joinedAt).format("dddd, MMMM Do YYYY, h:mm a")},
-		{name: "Top role", value: member.roles.highest.name, inline:true},
-		{name:"Color", value: member.displayColor.toString(), inline:true}
+		{
+			name: "Created on",
+			value: toUNIXTimestamp(member.user.createdTimestamp),
+		},
+		{ name: "Joined on", value: toUNIXTimestamp(member.joinedTimestamp) },
+		{ name: "Top role", value: member.roles.highest.name, inline: true },
+		{ name: "Color", value: member.displayHexColor, inline: true }
 	);
-	await interaction.reply({embeds: [embed]});
+	await interaction.reply({ embeds: [embed] });
 }
 
-export const category = "info"
+export const category = "info";

@@ -11,14 +11,10 @@ export const command = new SlashCommandBuilder()
 	.setName("ban")
 	.setDescription("Ban a member.")
 	.addUserOption(
-		new SlashCommandUserOption()
-			.setName("member")
-			.setDescription("The member to ban.")
+		new SlashCommandUserOption().setName("member").setDescription("The member to ban.")
 	)
 	.addStringOption(
-		new SlashCommandStringOption()
-			.setName("reason")
-			.setDescription("Reason to ban the member.")
+		new SlashCommandStringOption().setName("reason").setDescription("Reason to ban the member.")
 	);
 
 export async function callback(interaction: CommandInteraction) {
@@ -27,3 +23,5 @@ export async function callback(interaction: CommandInteraction) {
 		partialMember.toString().replace("<@", "").replace(">", "")
 	);
 }
+
+export const category = "moderation";

@@ -11,30 +11,25 @@ import { isKickable } from "../utils/moderation";
 export const command = new SlashCommandBuilder()
 	.setName("kick")
 	.setDescription("Kick a member")
-	.setDMPermission(false);
-
-command.addUserOption(
-	new SlashCommandUserOption()
-		.setName("member")
-		.setDescription("The member to kick from server.")
-		.setRequired(true)
-);
-command.addStringOption(
-	new SlashCommandStringOption()
-		.setName("reason")
-		.setDescription("Reason to kick the user.")
-		.setRequired(false)
-);
+	.setDMPermission(false)
+	.addUserOption(
+		new SlashCommandUserOption()
+			.setName("member")
+			.setDescription("The member to kick from server.")
+			.setRequired(true)
+	)
+	.addStringOption(
+		new SlashCommandStringOption()
+			.setName("reason")
+			.setDescription("Reason to kick the user.")
+			.setRequired(false)
+	);
 
 export async function callback(interaction: CommandInteraction) {
 	const author = interaction.guild.members.cache.get(interaction.user.id);
 
 	const target = interaction.guild.members.cache.get(
-		interaction.options
-			.getMember("member")
-			.toString()
-			.replace("<@", "")
-			.replace(">", "")
+		interaction.options.getMember("member").toString().replace("<@", "").replace(">", "")
 	);
 	if (!isKickable(author, target)[0]) {
 		let desc = "";
@@ -44,9 +39,7 @@ export async function callback(interaction: CommandInteraction) {
 			desc = `You don't have enough permissions to kick \`${target.user.tag}\``;
 		}
 		await interaction.reply({
-			embeds: [
-				new EmbedBuilder().setDescription(desc).setColor(Colors.DarkButNotBlack),
-			],
+			embeds: [new EmbedBuilder().setDescription(desc).setColor(Colors.DarkButNotBlack)],
 		});
 		return;
 	}
@@ -57,9 +50,7 @@ export async function callback(interaction: CommandInteraction) {
 	await target.kick();
 	await interaction.reply({
 		embeds: [
-			new EmbedBuilder().setDescription(
-				`\`${target.user.tag}\` was kicked | ${reasonStr}`
-			),
+			new EmbedBuilder().setDescription(`\`${target.user.tag}\` was kicked | ${reasonStr}`),
 		],
 	});
 }

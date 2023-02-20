@@ -22,15 +22,16 @@ configure({
 
 const logger = getLogger("commandHandler");
 logger.level = levels.INFO;
-const commandFiles = fs
-	.readdirSync("./src/commands")
-	.filter((file) => file.endsWith(".ts"));
+const commandFiles = fs.readdirSync("./src/commands").filter((file) => file.endsWith(".ts"));
 const commands: Collection<string, CallableFunction> = new Collection();
 
 const commandsJSON = [];
 
 export function setupCommands() {
+	commands.clear();
+	commandsJSON.splice(0, commandsJSON.length);
 	for (const file of commandFiles) {
+		// eslint-disable-next-line @typescript-eslint/no-var-requires
 		const commandData = require("../" + path.join("commands", file));
 		commands.set(commandData.command.name, commandData.callback);
 		commandsJSON.push(commandData.command.toJSON());
@@ -41,9 +42,7 @@ export function setupCommands() {
 export async function processInteractionCommands(inter: Interaction) {
 	if (!inter.isChatInputCommand()) return;
 	const command = commands.get(inter.commandName);
-	logger.info(
-		`command ${inter.commandName} was executed by ${inter.user.tag} (${inter.user.id})`
-	);
+	logger.info(`command ${inter.commandName} was executed by ${inter.user.tag} (${inter.user.id})`);
 	try {
 		await command(inter);
 	} catch (error) {
@@ -53,7 +52,7 @@ export async function processInteractionCommands(inter: Interaction) {
 		});
 		try {
 			logger.error(error);
-		} catch {}
+		} catch { /* empty */ }
 	}
 }
 
