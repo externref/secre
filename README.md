@@ -24,7 +24,8 @@ $ pip install poetry; poetry install
 # to run the bot
 $ npx tsc src/index.ts
 # to run the api
-$ uvicorn api.main:app --reload --host 0.0.0.0
+$ cd api
+$ uvicorn main:app --reload --host 0.0.0.0
 
 ```
 # commands
