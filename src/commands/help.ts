@@ -1,16 +1,12 @@
-import {
-	Collection,
-	Colors,
-	CommandInteraction,
-	EmbedBuilder,
-	SlashCommandBuilder,
-} from "discord.js";
+import { Collection, Colors, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import fs from "node:fs";
 import path from "node:path";
+import { SlashCommandInteraction } from "../overrides";
 
 export const command = new SlashCommandBuilder()
 	.setName("help")
-	.setDescription("Get help for the bot");
+	.setDescription("Get help for the bot")
+	.setDMPermission(false);
 const commandFiles = fs.readdirSync("./src/commands").filter((file) => file.endsWith(".ts"));
 const categories: Collection<string, Array<string>> = new Collection();
 const categoryNames = ["info", "moderation", "meta"];
@@ -29,7 +25,7 @@ function helpMap() {
 	}
 }
 helpMap();
-export async function callback(interaction: CommandInteraction) {
+export async function callback(interaction: SlashCommandInteraction) {
 	const embed = new EmbedBuilder()
 		.setColor(Colors.DarkButNotBlack)
 		.setAuthor({

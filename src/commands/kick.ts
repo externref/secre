@@ -1,13 +1,14 @@
 import {
 	Colors,
-	CommandInteraction,
 	EmbedBuilder,
 	SlashCommandBuilder,
 	SlashCommandStringOption,
 	SlashCommandUserOption,
 } from "discord.js";
 //import { DatabaseHandler } from "./utils/database";
+import { SlashCommandInteraction } from "../overrides";
 import { isKickable } from "../utils/moderation";
+
 export const command = new SlashCommandBuilder()
 	.setName("kick")
 	.setDescription("Kick a member")
@@ -25,7 +26,7 @@ export const command = new SlashCommandBuilder()
 			.setRequired(false)
 	);
 
-export async function callback(interaction: CommandInteraction) {
+export async function callback(interaction: SlashCommandInteraction) {
 	const author = interaction.guild.members.cache.get(interaction.user.id);
 
 	const target = interaction.guild.members.cache.get(

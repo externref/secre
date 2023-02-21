@@ -1,14 +1,14 @@
 import { Pool } from "pg";
 import * as Configs from "../../config.json";
-import { Client } from "discord.js";
+import { Secre } from "../overrides";
 
-class DatabaseHandler {
+export class DatabaseHandler {
 	pool: Pool;
-	client: Client;
+	client: Secre;
 	constructor() {
 		this.pool = new Pool(Configs.postgresConfigs);
 	}
-	async setupDatabase(client: Client) {
+	async setupDatabase(client: Secre) {
 		this.client = client;
 		await this.pool.connect();
 		await this.pool.query(
@@ -16,5 +16,3 @@ class DatabaseHandler {
 		);
 	}
 }
-
-export const database = new DatabaseHandler();

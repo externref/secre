@@ -1,23 +1,24 @@
 import {
+	AttachmentBuilder,
 	Colors,
-	CommandInteraction,
 	EmbedBuilder,
 	SlashCommandBuilder,
 	SlashCommandUserOption,
-	AttachmentBuilder,
 } from "discord.js";
 import { endpoints } from "../apiWrapper";
+import { SlashCommandInteraction } from "../overrides";
 
 export const command = new SlashCommandBuilder()
 	.setName("grayscale")
 	.setDescription("Add grayscale filter to avatar.")
+	.setDMPermission(false)
 	.addUserOption(
 		new SlashCommandUserOption()
 			.setName("member")
 			.setDescription("The member whose avatar to grayscale.")
 	);
 
-export async function callback(inter: CommandInteraction) {
+export async function callback(inter: SlashCommandInteraction) {
 	const partialMember = inter.options.getMember("member");
 	const member = inter.guild.members.cache.get(
 		partialMember.toString().replace("<@", "").replace(">", "")

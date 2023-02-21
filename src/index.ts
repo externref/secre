@@ -1,14 +1,14 @@
-import { ActivityType, Client, Events, GatewayIntentBits, Partials } from "discord.js";
+import { ActivityType, Events, GatewayIntentBits, Partials } from "discord.js";
 import { getLogger, levels } from "log4js";
 import moment from "moment";
 import * as Configs from "../config.json";
 import { processInteractionCommands, setupCommands } from "./handlers/commandHandler";
 import { processPrefixCommands } from "./handlers/messageCommands";
-import { database } from "./utils/database";
+import { Secre } from "./overrides";
 const logger = getLogger("index");
 logger.level = levels.INFO;
 
-const client = new Client({
+const client = new Secre({
 	intents: [
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMessages,
@@ -32,7 +32,7 @@ setupCommands();
 
 async function onReady() {
 	logger.info(`logged in as ${client.user?.tag}!`);
-	await database.setupDatabase(client);
+	await client.database.setupDatabase(client);
 }
 /* subsribing to the required events provided by discord */
 client.on(Events.ClientReady, onReady);

@@ -52,7 +52,9 @@ export async function processInteractionCommands(inter: Interaction) {
 		});
 		try {
 			logger.error(error);
-		} catch { /* empty */ }
+		} catch {
+			/* empty */
+		}
 	}
 }
 

@@ -1,14 +1,11 @@
-import {
-	CommandInteraction,
-	EmbedBuilder,
-	SlashCommandBuilder,
-	SlashCommandUserOption,
-} from "discord.js";
+import { EmbedBuilder, SlashCommandBuilder, SlashCommandUserOption } from "discord.js";
+import { SlashCommandInteraction } from "../overrides";
 import { toUNIXTimestamp /*, TimestampStyle*/ } from "../utils/stringOps";
 
 export const command = new SlashCommandBuilder()
 	.setName("userinfo")
 	.setDescription("Get information about the provided user or yourself.")
+	.setDMPermission(false)
 	.addUserOption(
 		new SlashCommandUserOption()
 			.setName("user")
@@ -16,7 +13,7 @@ export const command = new SlashCommandBuilder()
 			.setRequired(false)
 	)
 	.setDMPermission(false);
-export async function callback(interaction: CommandInteraction) {
+export async function callback(interaction: SlashCommandInteraction) {
 	let user = interaction.options.getMember("user");
 	if (user == null) user = interaction.member;
 	const member = interaction.guild.members.cache.get(

@@ -1,13 +1,11 @@
+import * as Configs from "../../config.json";
 
-import * as Configs from "../../config.json"
+class Endpoints {
+	baseURL = Configs.apiBaseURL;
 
-class Endpoints{
-    baseURL = Configs.apiBaseURL
-
-    public grayscaleFilter(url: string){
-        return `${this.baseURL}/grayscale?=${url}`
-    }
-
+	public grayscaleFilter(url: string) {
+		return `${this.baseURL}/grayscale?=${url}`;
+	}
 }
 
-export const endpoints = new Endpoints()
+export const endpoints = new Endpoints();
