@@ -1,4 +1,5 @@
 import fastapi
+
 from .images import ImageHandlers
 
 app = fastapi.FastAPI()

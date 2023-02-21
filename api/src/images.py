@@ -25,7 +25,5 @@ class ImageHandlers:
 
     async def add_grayscale_filter(self, url: str) -> bytes | None:
         loop = asyncio.get_event_loop()
-        image = await loop.run_in_executor(
-            None, self._add_grayscale_filter, await self.fetch_bytes_for_url(url)
-        )
+        image = await loop.run_in_executor(None, self._add_grayscale_filter, await self.fetch_bytes_for_url(url))
         return image

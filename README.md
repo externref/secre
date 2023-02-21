@@ -5,32 +5,20 @@ A simple to use discord bot written in typescript and python.
 </p>
 
 ## Running locally
-The program requires nodejs and python (3.8+) installed in order to run the code.
+
+The program requires nodejs (17.x+) and python (3.9+) installed in order to run the code.
+
+If you are on a linux environment you can run [`setup.sh`](./setup.sh) for requirements setup.
+
+To run the code use :
 ```sh
-# dependencies
+$secre_api # to run the API
 
-# install nodejs dependencies
-$ npm install 
-# install python dependencies
-$ python -m venv env
-$ source venv/bin/activate
-# after creating a venv install the deps
-$ pip install api/requirements.txt
-# or
-$ pip install poetry; poetry install
+$npx ts-node src/index.ts # to run the bot
+``` 
 
-# running code
+in different terminals
 
-# to run the bot
-$ npx tsc src/index.ts
-# to run the api
-$ cd api
-$ uvicorn main:app --reload --host 0.0.0.0
-
-```
 # commands
+
 i'll add later
-
-
-
-
