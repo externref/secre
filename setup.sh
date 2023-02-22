@@ -2,7 +2,7 @@
 echo "creating venv ..."
 python -m venv .venv
 source .venv/bin/activate
-python -m pip install -r api/requirements.txt
+python -m pip install -U .
 echo "python setup complete."
 
 # js setup
