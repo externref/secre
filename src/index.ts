@@ -32,7 +32,9 @@ setupCommands();
 
 async function onReady() {
 	logger.info(`logged in as ${client.user?.tag}!`);
-	await client.database.setupDatabase(client);
+	await client.database.setupDatabase(client).catch((e: Error) => {
+		logger.error("Unable to connect to Database\n", e);
+	});
 }
 /* subsribing to the required events provided by discord */
 client.on(Events.ClientReady, onReady);

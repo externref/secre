@@ -5,8 +5,8 @@ import {
 	SlashCommandBuilder,
 	SlashCommandUserOption,
 } from "discord.js";
-import { endpoints } from "../apiWrapper";
-import { SlashCommandInteraction } from "../overrides";
+import { endpoints } from "../../apiWrapper";
+import { SlashCommandInteraction } from "../../overrides";
 
 export const command = new SlashCommandBuilder()
 	.setName("grayscale")
@@ -39,5 +39,3 @@ export async function callback(inter: SlashCommandInteraction) {
 		files: [attachment],
 	});
 }
-
-export const category = "image";

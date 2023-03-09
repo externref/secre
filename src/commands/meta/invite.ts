@@ -6,7 +6,7 @@ import {
 	EmbedBuilder,
 	SlashCommandBuilder,
 } from "discord.js";
-import { SlashCommandInteraction } from "../overrides";
+import { SlashCommandInteraction } from "../../overrides";
 
 export const command = new SlashCommandBuilder()
 	.setName("invite")
@@ -24,5 +24,3 @@ export async function callback(interaction: SlashCommandInteraction) {
 	);
 	await interaction.reply({ embeds: [embed], components: [actionRow] });
 }
-
-export const category = "meta";

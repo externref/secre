@@ -5,36 +5,29 @@ import {
 	SlashCommandStringOption,
 	SlashCommandUserOption,
 } from "discord.js";
-//import { DatabaseHandler } from "./utils/database";
-import { SlashCommandInteraction } from "../overrides";
-import { isKickable } from "../utils/moderation";
+import { SlashCommandInteraction } from "../../overrides";
+import { isBannable } from "../../utils/moderation";
 
 export const command = new SlashCommandBuilder()
-	.setName("kick")
-	.setDescription("Kick a member")
+	.setName("ban")
+	.setDescription("Ban a member.")
 	.setDMPermission(false)
 	.addUserOption(
-		new SlashCommandUserOption()
-			.setName("member")
-			.setDescription("The member to kick from server.")
-			.setRequired(true)
+		new SlashCommandUserOption().setName("member").setDescription("The member to ban.")
 	)
 	.addStringOption(
-		new SlashCommandStringOption()
-			.setName("reason")
-			.setDescription("Reason to kick the user.")
-			.setRequired(false)
+		new SlashCommandStringOption().setName("reason").setDescription("Reason to ban the member.")
 	);
 
 export async function callback(interaction: SlashCommandInteraction) {
-	const author = interaction.guild.members.cache.get(interaction.user.id);
-
+	const partialMember = interaction.options.getMember("member");
 	const target = interaction.guild.members.cache.get(
-		interaction.options.getMember("member").toString().replace("<@", "").replace(">", "")
+		partialMember.toString().replace("<@", "").replace(">", "")
 	);
-	if (!isKickable(author, target)[0]) {
+	const author = interaction.guild.members.cache.get(interaction.user.id);
+	if (!isBannable(author, target)[0]) {
 		let desc = "";
-		if (isKickable(author, target)[1] == "bot") {
+		if (isBannable(author, target)[1] == "bot") {
 			desc = "Bot doesn't have enough permissions to kick that user.";
 		} else {
 			desc = `You don't have enough permissions to kick \`${target.user.tag}\``;
@@ -48,12 +41,11 @@ export async function callback(interaction: SlashCommandInteraction) {
 	let reasonStr = "";
 	if (reason == null) reasonStr = "No reason provided.";
 	else reasonStr = reason.value.toString();
-	await target.kick();
+	await target.ban({ reason: reasonStr });
+	const embed = new EmbedBuilder({
+		description: `\`${target.user.tag}\` was banned | ${reasonStr}`,
+	}).setColor(Colors.Blue);
 	await interaction.reply({
-		embeds: [
-			new EmbedBuilder().setDescription(`\`${target.user.tag}\` was kicked | ${reasonStr}`),
-		],
+		embeds: [embed],
 	});
 }
-
-export const category = "moderation";

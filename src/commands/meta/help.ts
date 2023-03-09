@@ -1,33 +1,34 @@
 import { Collection, Colors, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import fs from "node:fs";
 import path from "node:path";
-import { SlashCommandInteraction } from "../overrides";
+import { SlashCommandInteraction } from "../../overrides";
 
 export const command = new SlashCommandBuilder()
 	.setName("help")
 	.setDescription("Get help for the bot")
 	.setDMPermission(false);
-const commandFiles = fs.readdirSync("./src/commands").filter((file) => file.endsWith(".ts"));
+const commandFolders = fs.readdirSync("./src/commands");
 const categories: Collection<string, Array<string>> = new Collection();
 const categoryNames = ["info", "moderation", "meta"];
 function helpMap() {
-	for (const file of commandFiles) {
-		if (file == "help.ts") continue;
-		// eslint-disable-next-line @typescript-eslint/no-var-requires
-		const commandData = require("./" + path.join(file));
-		if (!categories.get(commandData.category)) {
-			categories.set(commandData.category, []);
+	for (const folder of commandFolders) {
+		const commandFiles = fs.readdirSync(`./src/commands/${folder}`);
+		for (const file of commandFiles) {
+			if (file == "help.ts") continue;
+			// eslint-disable-next-line @typescript-eslint/no-var-requires
+			const commandData = require("../" + path.join(folder, file));
+			if (!categories.get(folder)) {
+				categories.set(folder, []);
+			}
+			categories.set(folder, categories.get(folder).concat(commandData.command.name));
 		}
-		categories.set(
-			commandData.category,
-			categories.get(commandData.category).concat(commandData.command.name)
-		);
 	}
 }
 helpMap();
+console.log(categories);
 export async function callback(interaction: SlashCommandInteraction) {
 	const embed = new EmbedBuilder()
-		.setColor(Colors.DarkButNotBlack)
+		.setColor(Colors.NotQuiteBlack)
 		.setAuthor({
 			name: interaction.client.user.username,
 			iconURL: interaction.client.user.displayAvatarURL(),
@@ -45,5 +46,3 @@ export async function callback(interaction: SlashCommandInteraction) {
 	}
 	await interaction.reply({ embeds: [embed] });
 }
-
-export const category = null;

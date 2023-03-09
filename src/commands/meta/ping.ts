@@ -1,6 +1,6 @@
 import { Colors, EmbedBuilder, SlashCommandBuilder } from "discord.js";
-import { SlashCommandInteraction } from "../overrides";
-import { CooldownHandler } from "../utils/cooldown";
+import { SlashCommandInteraction } from "../../overrides";
+import { CooldownHandler } from "../../utils/cooldown";
 
 const cooldown = new CooldownHandler(10);
 export const command = new SlashCommandBuilder()
@@ -16,5 +16,3 @@ export async function callback(inter: SlashCommandInteraction) {
 	await inter.reply({ embeds: [embed] });
 	cooldown.push(inter.user.id);
 }
-
-export const category = "meta";

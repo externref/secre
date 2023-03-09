@@ -5,10 +5,12 @@ import { Secre } from "../overrides";
 export class DatabaseHandler {
 	pool: Pool;
 	client: Secre;
+	running: boolean = false;
 	constructor() {
 		this.pool = new Pool(Configs.postgresConfigs);
 	}
 	async setupDatabase(client: Secre) {
+		if (this.running) return;
 		this.client = client;
 		await this.pool.connect();
 		await this.pool.query(

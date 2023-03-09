@@ -1,6 +1,6 @@
 import { EmbedBuilder, SlashCommandBuilder, SlashCommandUserOption } from "discord.js";
-import { SlashCommandInteraction } from "../overrides";
-import { toUNIXTimestamp /*, TimestampStyle*/ } from "../utils/stringOps";
+import { SlashCommandInteraction } from "../../overrides";
+import { toUNIXTimestamp /*, TimestampStyle*/ } from "../../utils/stringOps";
 
 export const command = new SlashCommandBuilder()
 	.setName("userinfo")
@@ -40,5 +40,3 @@ export async function callback(interaction: SlashCommandInteraction) {
 	);
 	await interaction.reply({ embeds: [embed] });
 }
-
-export const category = "info";

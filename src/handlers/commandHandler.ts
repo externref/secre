@@ -22,7 +22,7 @@ configure({
 
 const logger = getLogger("commandHandler");
 logger.level = levels.INFO;
-const commandFiles = fs.readdirSync("./src/commands").filter((file) => file.endsWith(".ts"));
+const commandFolders = fs.readdirSync("./src/commands");
 const commands: Collection<string, CallableFunction> = new Collection();
 
 const commandsJSON = [];
@@ -30,12 +30,18 @@ const commandsJSON = [];
 export function setupCommands() {
 	commands.clear();
 	commandsJSON.splice(0, commandsJSON.length);
-	for (const file of commandFiles) {
-		// eslint-disable-next-line @typescript-eslint/no-var-requires
-		const commandData = require("../" + path.join("commands", file));
-		commands.set(commandData.command.name, commandData.callback);
-		commandsJSON.push(commandData.command.toJSON());
+	for (const folder of commandFolders) {
+		const commandFiles = fs
+			.readdirSync(`./src/commands/${folder}`)
+			.filter((file) => file.endsWith(".ts"));
+		for (const file of commandFiles) {
+			// eslint-disable-next-line @typescript-eslint/no-var-requires
+			const commandData = require("../" + path.join("commands", folder, file));
+			commands.set(commandData.command.name, commandData.callback);
+			commandsJSON.push(commandData.command.toJSON());
+		}
 	}
+
 	logger.info(`loaded ${commandsJSON.length} commands`);
 }
 
